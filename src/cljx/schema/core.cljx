@@ -75,7 +75,7 @@
    See the docstrings of defrecord, fn, and defn for more details about how
    to use these macros."
   ;; don't exclude fn because of bug in extend-protocol, and def because it's not a var.
-  (:refer-clojure :exclude [Keyword Symbol defrecord defn letfn defmethod])
+  (:refer-clojure :exclude [Keyword Symbol defrecord defn letfn defmethod fn])
   (:require
    [clojure.string :as str]
    #+clj [schema.macros :as macros]
@@ -1077,7 +1077,7 @@
       (macros/safe-get (meta f) :schema)))
 
 ;; work around bug in extend-protocol (refers to bare 'fn, so we can't exclude it).
-#+clj (ns-unmap *ns* 'fn)
+;;#+clj (ns-unmap *ns* 'fn)
 
 (defmacro fn
   "s/fn : s/defn :: clojure.core/fn : clojure.core/defn
