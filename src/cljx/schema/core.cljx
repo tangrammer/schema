@@ -1077,7 +1077,7 @@
       (macros/safe-get (meta f) :schema)))
 
 ;; work around bug in extend-protocol (refers to bare 'fn, so we can't exclude it).
-;;#+clj (ns-unmap *ns* 'fn)
+;; #+clj (ns-unmap *ns* 'fn)
 
 (defmacro fn
   "s/fn : s/defn :: clojure.core/fn : clojure.core/defn
@@ -1193,18 +1193,18 @@
     (cljs.core/-add-method
      ~(with-meta multifn {:tag 'cljs.core/MultiFn})
      ~dispatch-val
-     (fn ~(with-meta (gensym) (meta multifn)) ~@fn-tail))
+     (clojure.core/fn ~(with-meta (gensym) (meta multifn)) ~@fn-tail))
     (. ~(with-meta multifn {:tag 'clojure.lang.MultiFn})
        addMethod
        ~dispatch-val
-       (fn ~(with-meta (gensym) (meta multifn)) ~@fn-tail))))
+       (clojure.core/fn ~(with-meta (gensym) (meta multifn)) ~@fn-tail))))
 
 (defmacro letfn
   "s/letfn : s/fn :: clojure.core/letfn : clojure.core/fn"
   [fnspecs & body]
   (list `let
         (vec (interleave (map first fnspecs)
-                         (map #(cons `fn %) fnspecs)))
+                         (map #(cons `clojure.core/fn %) fnspecs)))
         `(do ~@body)))
 
 (defmacro def
